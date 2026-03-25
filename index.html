@@ -2,21 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Debug</title>
+  <title>Open in Chrome</title>
 </head>
 <body>
-  <h1>Debug info</h1>
+  <h1>Открываем в Chrome...</h1>
+  <button onclick="reset()">Сбросить и попробовать снова</button>
   <pre id="info"></pre>
 
   <script>
-    const info = {
-      userAgent: navigator.userAgent,
-      hasWindowChrome: !!window.chrome,
-      windowChromeKeys: window.chrome ? Object.keys(window.chrome) : 'none',
-      referrer: document.referrer,
-    };
+    function reset() {
+      localStorage.removeItem('opened');
+      location.reload();
+    }
 
-    document.getElementById('info').textContent = JSON.stringify(info, null, 2);
+    window.onload = function() {
+      const isRealChrome = !!window.chrome;
+      const alreadyOpened = localStorage.getItem('opened');
+
+      document.getElementById('info').textContent = JSON.stringify({
+        isRealChrome,
+        alreadyOpened,
+      }, null, 2);
+
+      if (!isRealChrome && !alreadyOpened) {
+        localStorage.setItem('opened', 'true');
+        const url = window.location.href;
+        const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
+        window.location.href = intentUrl;
+      }
+    }
   </script>
 </body>
 </html>

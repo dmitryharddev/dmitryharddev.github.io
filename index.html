@@ -3,28 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Open in Chrome</title>
- <script>
-  function openInChrome() {
-    // Если уже открыли в Chrome — не редиректим
-    if (localStorage.getItem('opened')) return;
+  <script>
+    window.onload = function() {
+      const isRealChrome = !!window.chrome;
 
-    const ua = navigator.userAgent;
-    const isAndroid = /Android/i.test(ua);
-    const isInAppBrowser = /Instagram|FBAN|FBAV|Telegram/i.test(ua);
-
-    if (isAndroid && isInAppBrowser) {
-      localStorage.setItem('opened', 'true');
-      const url = window.location.href;
-      const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
-      window.location.href = intentUrl;
+      if (!isRealChrome && !localStorage.getItem('opened')) {
+        localStorage.setItem('opened', 'true');
+        const url = window.location.href;
+        const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
+        window.location.href = intentUrl;
+      }
     }
-  }
-
-  window.onload = openInChrome;
-</script>
+  </script>
 </head>
 <body>
-  <p>Открываем в Chrome...</p>
-  <a href="#" onclick="openInChrome()">Открыть в Chrome</a>
+  <h1>Hello, World!</h1>
 </body>
 </html>

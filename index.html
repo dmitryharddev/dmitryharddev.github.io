@@ -6,26 +6,10 @@
 </head>
 <body>
   <h1>Открываем в Chrome...</h1>
-  <button onclick="reset()">Сбросить и попробовать снова</button>
-  <pre id="info"></pre>
 
   <script>
-    function reset() {
-      localStorage.removeItem('opened');
-      location.reload();
-    }
-
     window.onload = function() {
-      const isRealChrome = !!window.chrome;
-      const alreadyOpened = localStorage.getItem('opened');
-
-      document.getElementById('info').textContent = JSON.stringify({
-        isRealChrome,
-        alreadyOpened,
-      }, null, 2);
-
-      if (!isRealChrome && !alreadyOpened) {
-        localStorage.setItem('opened', 'true');
+      if (!window.chrome) {
         const url = window.location.href;
         const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
         window.location.href = intentUrl;

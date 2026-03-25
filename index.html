@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Open in Chrome</title>
-  <script>
-    window.onload = function() {
-      const isRealChrome = !!window.chrome;
-
-      if (!isRealChrome && !localStorage.getItem('opened')) {
-        localStorage.setItem('opened', 'true');
-        const url = window.location.href;
-        const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
-        window.location.href = intentUrl;
-      }
-    }
-  </script>
+  <title>Debug</title>
 </head>
 <body>
-  <h1>Hello, World!</h1>
+  <h1>Debug info</h1>
+  <pre id="info"></pre>
+
+  <script>
+    const info = {
+      userAgent: navigator.userAgent,
+      hasWindowChrome: !!window.chrome,
+      windowChromeKeys: window.chrome ? Object.keys(window.chrome) : 'none',
+      referrer: document.referrer,
+    };
+
+    document.getElementById('info').textContent = JSON.stringify(info, null, 2);
+  </script>
 </body>
 </html>
